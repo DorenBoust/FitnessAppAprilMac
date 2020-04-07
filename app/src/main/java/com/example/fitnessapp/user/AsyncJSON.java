@@ -67,6 +67,7 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
 
             String name = acf.getString("name");
             String bDay = acf.getString("bDay");
+            String nextMeet = acf.getString("next_meet");
             Date bDayDate = stringToDate(bDay,-1900);
 
             String height = acf.getString("height");
@@ -136,6 +137,7 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
             //diet Table
             JSONObject process = acf.getJSONObject("prosess");
             JSONObject table = process.getJSONObject("table");
+            int meetingNumber = Integer.parseInt(process.getString("meeting_number"));
             JSONArray body = table.getJSONArray("body");
 
             for (int z = 0; z < body.length() ; z++) {
@@ -290,9 +292,9 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
             fAuth = FirebaseAuth.getInstance();
             fStore = FirebaseFirestore.getInstance();
 
-            DietProcessTab dietProcessTab = new DietProcessTab(dietRawList);
+            DietProcessTab dietProcessTab = new DietProcessTab(dietRawList,meetingNumber);
 
-            User user = new User(name,strings[0],bDayDate,heightDouble,job,phoneNumber,email,strings[1],goal,limitation,days, dietProcessTab,dietFinal, productDataBaseList);
+            User user = new User(name, nextMeet, strings[0],bDayDate,heightDouble,job,phoneNumber,email,strings[1],goal,limitation,days, dietProcessTab,dietFinal, productDataBaseList);
 
 
 

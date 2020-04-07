@@ -2,15 +2,18 @@ package com.example.fitnessapp.main;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fitnessapp.R;
@@ -28,6 +31,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +39,8 @@ public class StatusFragment extends Fragment implements Serializable {
 
     private StatusViewModel mViewModel;
     private User user;
+    private TextView nextMeet;
+    private Button btnCalendar;
     private List<Date> chartDate = new ArrayList<>();
     private List<String> chartDateString = new ArrayList<>();
     private List<Float> chartWeight = new ArrayList<>();
@@ -63,6 +69,8 @@ public class StatusFragment extends Fragment implements Serializable {
         System.out.println("USER ON STATUS - " + user);
         extractChart(user);
 
+        nextMeet = v.findViewById(R.id.next_metting_tv);
+        btnCalendar = v.findViewById(R.id.btn_calendar);
         tvStartWeight = v.findViewById(R.id.statusFragment_tv__startData_weight);
         tvStartArm = v.findViewById(R.id.statusFragment_tv__startData_arm);
         tvStartBodyFat = v.findViewById(R.id.statusFragment_tv_Abdominal);
@@ -71,6 +79,45 @@ public class StatusFragment extends Fragment implements Serializable {
         tvCurrectGoal = v.findViewById(R.id.statusFragment_tv_goal);
 
         recentData();
+
+
+        btnCalendar.setOnClickListener(btn->{
+
+
+
+            String[] s = user.getNextMeet().split(" ");
+            String date = s[0];
+            String time = s[1];
+
+            String[] dateSplit = date.split("/");
+            int day = Integer.parseInt(dateSplit[0]);
+            int month = Integer.parseInt(dateSplit[1]);
+            int year = Integer.parseInt(dateSplit[2]);
+
+            String[] timeSplit = time.split(":");
+            int hour = Integer.parseInt(timeSplit[0]);
+            int min = Integer.parseInt(timeSplit[1]);
+
+            int meetNumber = user.getDietTable().getMeetNumber();
+            String title = "פגישת סטטוס תזונאי ומאמן כושר - " + meetNumber;
+
+            Calendar beginTime = Calendar.getInstance();
+            beginTime.set(year, month, day, hour, min);
+            Calendar endTime = Calendar.getInstance();
+            endTime.set(year, month, day, hour, min + 30);
+            Intent intent = new Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                    .putExtra(CalendarContract.Events.TITLE, title);
+//                    .putExtra(CalendarContract.Events.EVENT_LOCATION, "The gym")
+//                    .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
+//                    .putExtra(Intent.EXTRA_EMAIL, user.getEmail());
+            startActivity(intent);
+
+
+
+        });
 
         graph = v.findViewById(R.id.statusFragment_graph);
 
@@ -200,6 +247,8 @@ public class StatusFragment extends Fragment implements Serializable {
     }
 
     private void recentData(){
+
+        nextMeet.setText(user.getNextMeet());
         tvStartWeight.setText(chartWeight.get(chartWeight.size()-1).toString());
         tvStartArm.setText(chartArm.get(chartArm.size()-1).toString());
         tvStartBodyFat.setText(chartBodyFat.get(chartBodyFat.size()-1).toString());

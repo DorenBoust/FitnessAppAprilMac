@@ -11,6 +11,7 @@ import java.util.List;
 public class User implements Serializable {
 
     private String name;
+    private String nextMeet;
     private String integrationCode;
     private Date bDay;
     private double height;
@@ -25,8 +26,9 @@ public class User implements Serializable {
     private Diet diet;
     private Dictionary<String, ProductDataBase> productDataBase;
 
-    public User(String name, String integrationCode, Date bDay, double height, String job, String phoneNumber, String email, String registerEmail, String goal, String limitation, List<Day> days, DietProcessTab dietTable, Diet diet, Dictionary<String, ProductDataBase> productDataBase) {
+    public User(String name, String nextMeet, String integrationCode, Date bDay, double height, String job, String phoneNumber, String email, String registerEmail, String goal, String limitation, List<Day> days, DietProcessTab dietTable, Diet diet, Dictionary<String, ProductDataBase> productDataBase) {
         this.name = name;
+        this.nextMeet = nextMeet;
         this.integrationCode = integrationCode;
         this.bDay = bDay;
         this.height = height;
@@ -40,6 +42,14 @@ public class User implements Serializable {
         this.dietTable = dietTable;
         this.diet = diet;
         this.productDataBase = productDataBase;
+    }
+
+    public String getNextMeet() {
+        return nextMeet;
+    }
+
+    public void setNextMeet(String nextMeet) {
+        this.nextMeet = nextMeet;
     }
 
     public Dictionary<String, ProductDataBase> getProductDataBase() {
@@ -127,10 +137,12 @@ public class User implements Serializable {
         this.diet = diet;
     }
 
+
     @Override
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
+                ", nextMeet='" + nextMeet + '\'' +
                 ", integrationCode='" + integrationCode + '\'' +
                 ", bDay=" + bDay +
                 ", height=" + height +

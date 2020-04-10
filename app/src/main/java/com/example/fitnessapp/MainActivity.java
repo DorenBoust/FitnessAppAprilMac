@@ -19,6 +19,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.fitnessapp.articals.AsyncArticalsJSON;
+import com.example.fitnessapp.articals.Recpie;
 import com.example.fitnessapp.keys.KeysFirebaseStore;
 import com.example.fitnessapp.keys.KeysSharedPrefercence;
 import com.example.fitnessapp.main.ArticlesFragment;
@@ -51,7 +53,9 @@ import static com.example.fitnessapp.models.AppNotification.CHANNEL_2_ID;
 public class MainActivity extends AppCompatActivity {
 
     private MutableLiveData<User> userJsonLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Recpie>> recpiesJsonLiveData = new MutableLiveData<>();
     private User userObject;
+    private List<Recpie> recpiesList;
     private ConstraintLayout splash;
     private ConstraintLayout menuBar;
 
@@ -117,7 +121,18 @@ public class MainActivity extends AppCompatActivity {
         jsonParser();
 
 
-       userJsonLiveData.observe(this, new Observer<User>() {
+
+        recpiesJsonLiveData.observe(this, new Observer<List<Recpie>>() {
+            @Override
+            public void onChanged(List<Recpie> recpies) {
+
+                recpiesList = recpies;
+
+            }
+        });
+
+
+        userJsonLiveData.observe(this, new Observer<User>() {
            @Override
            public void onChanged(User user) {
 
@@ -142,6 +157,9 @@ public class MainActivity extends AppCompatActivity {
 
            }
        });
+
+
+
 
 
 
@@ -240,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
                     String integrationCode = documentSnapshot.getString(KeysFirebaseStore.INTEGRATION_CODE);
                     String email = documentSnapshot.getString(KeysFirebaseStore.EMAIL);
                     new AsyncJSON(userJsonLiveData).execute(integrationCode, email);
+                    new AsyncArticalsJSON(recpiesJsonLiveData).execute();
                 }else {
                     Toast.makeText(MainActivity.this, "Doc not exesite", Toast.LENGTH_SHORT).show();
                 }

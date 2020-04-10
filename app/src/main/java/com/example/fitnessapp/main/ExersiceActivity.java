@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -557,6 +558,11 @@ public class ExersiceActivity extends AppCompatActivity {
         Drawable drawable = ivMainImage.getDrawable();
         Bitmap picNotificatio = ((BitmapDrawable)drawable).getBitmap();
 
+//        Intent intent = new Intent(Intent.ACTION_SEND);
+//        intent.setPackage("com.example.fitnessapp");
+//        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,0);
+
+
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_notification_ex_timer)
                 .setContentTitle(tvExName.getText())
@@ -568,6 +574,7 @@ public class ExersiceActivity extends AppCompatActivity {
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setColor(getResources().getColor(R.color.mainGreen))
                 .setAutoCancel(true)
+//                .setContentIntent(contentIntent)
                 .build();
 
         notificationManager.notify(1,notification);

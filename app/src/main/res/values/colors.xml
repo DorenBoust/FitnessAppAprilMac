@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="mainGreen">#28dd75</color>
+    <color name="mainGreenOpacity">#B228DD75</color>
     <color name="secondaryGreen">#51e490</color>
     <color name="waite">#FFFFFF</color>
     <color name="lightGreen">#97E6B8</color>

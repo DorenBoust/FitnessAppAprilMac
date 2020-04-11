@@ -1,9 +1,10 @@
 package com.example.fitnessapp.articals;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public class Recpie {
+public class Recpie implements Serializable {
 
     private String id;
     private String name;
@@ -13,8 +14,9 @@ public class Recpie {
     private String mainImage;
     private List<RecpieProduct> product;
     private RecpieSteps steps;
+    private String level;
 
-    public Recpie(String id, String name, String sentencePreview, String estTime, List<String> forWhoGoal, String mainImage, List<RecpieProduct> product, RecpieSteps steps) {
+    public Recpie(String id, String name, String sentencePreview, String estTime, List<String> forWhoGoal, String mainImage, List<RecpieProduct> product, RecpieSteps steps, String level) {
         this.id = id;
         this.name = name;
         this.sentencePreview = sentencePreview;
@@ -23,6 +25,7 @@ public class Recpie {
         this.mainImage = mainImage;
         this.product = product;
         this.steps = steps;
+        this.level = level;
     }
 
     public String getId() {
@@ -89,6 +92,14 @@ public class Recpie {
         this.steps = steps;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
     @Override
     public String toString() {
         return "Recpie{" +
@@ -100,6 +111,7 @@ public class Recpie {
                 ", mainImage='" + mainImage + '\'' +
                 ", product=" + product +
                 ", steps=" + steps +
+                ", level='" + level + '\'' +
                 '}';
     }
 }

@@ -1,9 +1,10 @@
 package com.example.fitnessapp.articals;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public class RecpieSteps {
+public class RecpieSteps implements Serializable {
 
     private int stepNumber;
     private List<String> steps;

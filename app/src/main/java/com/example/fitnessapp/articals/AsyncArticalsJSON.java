@@ -17,16 +17,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AsyncArticalsJSON extends AsyncTask<String,Integer,List<Recpie>> {
+public class AsyncArticalsJSON extends AsyncTask<String,Integer,Recipes> {
 
-    MutableLiveData<List<Recpie>> mLiveDataRecpie;
+    MutableLiveData<Recipes> mLiveDataRecpie;
 
-    public AsyncArticalsJSON(MutableLiveData<List<Recpie>> mLiveDataRecpie) {
+    public AsyncArticalsJSON(MutableLiveData<Recipes> mLiveDataRecpie) {
         this.mLiveDataRecpie = mLiveDataRecpie;
     }
 
     @Override
-    protected List<Recpie> doInBackground(String... strings) {
+    protected Recipes doInBackground(String... strings) {
 
         String address = "http://appfitness.boust.me/wp-json/acf/v3/recipe";
         try {
@@ -96,11 +96,11 @@ public class AsyncArticalsJSON extends AsyncTask<String,Integer,List<Recpie>> {
                 RecpieSteps recpieSteps = new RecpieSteps(numberOfSteps,stepsList);
 
 
-                recpies.add(new Recpie(id,name,sentencePreview,estTime,goals,mainImage,recpieProducts,recpieSteps));
+                recpies.add(new Recpie(id,name,sentencePreview,estTime,goals,mainImage,recpieProducts,recpieSteps,level));
             }
 
 
-            return recpies;
+            return new Recipes(recpies);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -132,7 +132,7 @@ public class AsyncArticalsJSON extends AsyncTask<String,Integer,List<Recpie>> {
     }
 
     @Override
-    protected void onPostExecute(List<Recpie> recpies) {
+    protected void onPostExecute(Recipes recpies) {
         super.onPostExecute(recpies);
         System.out.println("recpies - " + recpies);
         mLiveDataRecpie.setValue(recpies);

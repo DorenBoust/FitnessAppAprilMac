@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.fitnessapp.articals.AsyncArticalsJSON;
+import com.example.fitnessapp.articals.Recipes;
 import com.example.fitnessapp.articals.Recpie;
 import com.example.fitnessapp.keys.KeysFirebaseStore;
 import com.example.fitnessapp.keys.KeysSharedPrefercence;
@@ -53,9 +54,9 @@ import static com.example.fitnessapp.models.AppNotification.CHANNEL_2_ID;
 public class MainActivity extends AppCompatActivity {
 
     private MutableLiveData<User> userJsonLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<Recpie>> recpiesJsonLiveData = new MutableLiveData<>();
+    private MutableLiveData<Recipes> recpiesJsonLiveData = new MutableLiveData<>();
     private User userObject;
-    private List<Recpie> recpiesList;
+    private Recipes recpiesList;
     private ConstraintLayout splash;
     private ConstraintLayout menuBar;
 
@@ -122,14 +123,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        recpiesJsonLiveData.observe(this, new Observer<List<Recpie>>() {
+        recpiesJsonLiveData.observe(this, new Observer<Recipes>() {
             @Override
-            public void onChanged(List<Recpie> recpies) {
+            public void onChanged(Recipes recpies) {
 
                 recpiesList = recpies;
+                ArticlesFragment articlesFragment = new ArticlesFragment();
+                BundleSingleton.setRecipe(recpies, articlesFragment);
 
             }
         });
+
+
 
 
         userJsonLiveData.observe(this, new Observer<User>() {
@@ -140,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                StatusFragment statusFragment = new StatusFragment();
 
                BundleSingleton.setUser(userObject, statusFragment);
+
 
                splash.setAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.faidout));
                splash.setVisibility(View.INVISIBLE);
@@ -318,7 +324,10 @@ public class MainActivity extends AppCompatActivity {
 
                 Fragment fragment = fragments.get(i);
                 BundleSingleton.setUser(userObject, fragment);
+//                BundleSingleton.setRecipe(recpiesList,fragment);
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.faidin,R.anim.faidout,R.anim.faidin,R.anim.faidout).replace(R.id.mainFragment, fragment).commitNow();
+
+
 
             }
         }

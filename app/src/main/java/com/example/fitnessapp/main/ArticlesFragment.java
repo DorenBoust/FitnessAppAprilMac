@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.articals.ArticalsFragmentTab;
 import com.example.fitnessapp.articals.PageAdapter;
+import com.example.fitnessapp.articals.Recipes;
 import com.example.fitnessapp.articals.RecipesFragmentTab;
 import com.example.fitnessapp.keys.KeysBundle;
 import com.example.fitnessapp.user.User;
@@ -26,6 +27,7 @@ public class ArticlesFragment extends Fragment {
 
     private ArticlesViewModel mViewModel;
     private User user;
+    private Recipes recipes;
 
     //tab
     private TabLayout tabLayout;
@@ -47,7 +49,12 @@ public class ArticlesFragment extends Fragment {
         View v =  inflater.inflate(R.layout.articles_fragment, container, false);
 
         user = (User) getArguments().getSerializable(KeysBundle.USER_DATA_TO_FRAGMENT);
-        System.out.println("Articals" + user);
+        System.out.println("Articals ++ " + user);
+
+        recipes = (Recipes) getArguments().getSerializable(KeysBundle.RECIPE_TO_FRAGMENT);
+        System.out.println("Articals ++ " + recipes);
+
+
 
 
         tabLayout = v.findViewById(R.id.layoutTab);
@@ -56,19 +63,16 @@ public class ArticlesFragment extends Fragment {
         viewPager = v.findViewById(R.id.viewPager);
         tabLayout = v.findViewById(R.id.layoutTab);
 
-        recipesFragmentTab = new RecipesFragmentTab();
+        recipesFragmentTab = new RecipesFragmentTab(recipes);
         articalsFragmentTab = new ArticalsFragmentTab();
 
         tabLayout.setupWithViewPager(viewPager);
 
-        PageAdapter pageAdapter = new PageAdapter(getParentFragmentManager(), 0);
+        PageAdapter pageAdapter = new PageAdapter(getChildFragmentManager(), 0);
         pageAdapter.addFragment(recipesFragmentTab, "מתכונים");
         pageAdapter.addFragment(articalsFragmentTab, "מאמרים");
         viewPager.setAdapter(pageAdapter);
 
-
-//        pageAdapter = new PageAdapter(getChildFragmentManager(), tabLayout.getTabCount());
-//        viewPager.setAdapter(pageAdapter);
 
 
         return v;

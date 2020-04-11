@@ -1,6 +1,8 @@
 package com.example.fitnessapp.articals;
 
-public class RecpieProduct {
+import java.io.Serializable;
+
+public class RecpieProduct implements Serializable {
 
     private String productName;
     private String unit;

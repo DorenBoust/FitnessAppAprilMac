@@ -19,18 +19,21 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeRecyclerAd
 
     private Recipes recpies;
     private LayoutInflater inflater;
+    private OnRecipeListener mOnRecipeListener;
 
-    public RecipeRecyclerAdapter(Recipes recpies, LayoutInflater inflater) {
+    public RecipeRecyclerAdapter(Recipes recpies, LayoutInflater inflater, OnRecipeListener mOnRecipeListener) {
         this.recpies = recpies;
         this.inflater = inflater;
+        this.mOnRecipeListener = mOnRecipeListener;
     }
+
 
     @NonNull
     @Override
     public RecipeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View v = inflater.inflate(R.layout.recipe_fragment_layout, parent,false);
-        return new RecipeHolder(v);
+        return new RecipeHolder(v, mOnRecipeListener);
     }
 
     @Override
@@ -50,22 +53,35 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeRecyclerAd
         return recpies.getRecipes().size();
     }
 
-    public class RecipeHolder extends RecyclerView.ViewHolder{
+    public class RecipeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView recipeImage;
         TextView recipeTitle;
         TextView recipeTime;
         TextView recipeLevel;
+        OnRecipeListener onRecipeListener;
 
-        public RecipeHolder(@NonNull View itemView) {
+        public RecipeHolder(@NonNull View itemView, OnRecipeListener onRecipeListener) {
             super(itemView);
 
             recipeImage = itemView.findViewById(R.id.recpie_image);
             recipeTitle = itemView.findViewById(R.id.recpie_title_tv);
             recipeTime = itemView.findViewById(R.id.recpie_time_tv);
             recipeLevel = itemView.findViewById(R.id.recpie_level);
+            this.onRecipeListener = onRecipeListener;
 
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            onRecipeListener.OnRecipeClick(getAdapterPosition());
 
         }
+    }
+
+    public interface OnRecipeListener{
+        void OnRecipeClick(int position);
     }
 }

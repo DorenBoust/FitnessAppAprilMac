@@ -9,5 +9,7 @@ public class KeysIntents {
     public final static String DIET_DATA = "diet data";
     public final static String SEND_USER = "send user to diet";
 
+    public final static String SEND_RECIPE = "send recipe";
+
 
 }

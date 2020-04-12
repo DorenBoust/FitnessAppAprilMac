@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
-
     <application
         android:name=".models.AppNotification"
         android:allowBackup="true"
@@ -16,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".main.DietActivity"></activity>
+        <activity android:name=".articals.RecipeActivity"></activity>
+        <activity android:name=".main.DietActivity" />
         <activity android:name=".main.ExersiceActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".IntroActivity">

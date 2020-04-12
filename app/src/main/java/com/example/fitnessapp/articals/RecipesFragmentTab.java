@@ -1,6 +1,7 @@
 package com.example.fitnessapp.articals;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -18,18 +19,16 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.fitnessapp.R;
-import com.example.fitnessapp.keys.KeysBundle;
 import com.example.fitnessapp.keys.KeysSharedPrefercence;
-import com.example.fitnessapp.main.FitnessDaysRecyclerAdapter;
 import com.google.gson.Gson;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecipesFragmentTab extends Fragment {
+public class RecipesFragmentTab extends Fragment implements RecipeRecyclerAdapter.OnRecipeListener {
 
     private TextView titleName;
-    private Recipes recipes;
+    private Recipes recipesList;
     private Recipes refrashRecipes;
     private SwipeRefreshLayout swipeRefreshLayout;
     private MutableLiveData<Recipes> mutableLiveData = new MutableLiveData<>();
@@ -38,7 +37,7 @@ public class RecipesFragmentTab extends Fragment {
 
     public RecipesFragmentTab(Recipes recipes) {
         // Required empty public constructor
-        this.recipes = recipes;
+        this.recipesList = recipes;
     }
 
 
@@ -73,17 +72,18 @@ public class RecipesFragmentTab extends Fragment {
 
         if (spRecipes.equals("null")) {
 
-            RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(recipes, getLayoutInflater());
+            RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(recipesList, getLayoutInflater(), RecipesFragmentTab.this);
             recyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_diet_fragment_meal_recycler));
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(adapter);
 
+
         } else {
 
             Gson gson = new Gson();
-            recipes = gson.fromJson(spRecipes, Recipes.class);
+            recipesList = gson.fromJson(spRecipes, Recipes.class);
 
-            RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(recipes, getLayoutInflater());
+            RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(recipesList, getLayoutInflater(), RecipesFragmentTab.this);
             recyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_diet_fragment_meal_recycler));
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(adapter);
@@ -112,12 +112,12 @@ public class RecipesFragmentTab extends Fragment {
                 System.out.println("OBSERRRRRR");
                 refrashRecipes = recipes;
 
-                RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(recipes,getLayoutInflater());
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(getContext(),R.anim.layout_diet_fragment_meal_recycler));
+                RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(refrashRecipes, getLayoutInflater(), RecipesFragmentTab.this);
+                recyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_diet_fragment_meal_recycler));
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setAdapter(adapter);
 
+                recyclerView.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
 
 
@@ -128,6 +128,25 @@ public class RecipesFragmentTab extends Fragment {
 
 
         return v;
+
+
+    }
+
+    @Override
+    public void OnRecipeClick(int position) {
+
+        recipesList.getRecipes().get(position);
+        Intent intent = new Intent(getActivity(), RecipeActivity.class);
+        startActivity(intent);
+
+    }
+
+    private void recyclerViewAdapter(RecyclerView recyclerView, Recipes recipes){
+
+        RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(recipes, getLayoutInflater(), RecipesFragmentTab.this);
+        recyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_diet_fragment_meal_recycler));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
 
 
     }

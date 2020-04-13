@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <View
-        android:id="@+id/ex_activity_recycler_line"
+        android:id="@+id/recipe_product_activity_recycler_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="32dp"
@@ -21,7 +21,7 @@
 
 
     <TextView
-        android:id="@+id/ex_history_recycler_set"
+        android:id="@+id/number_of_product_recycler_recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
@@ -39,9 +39,9 @@
         android:layout_marginTop="30dp"
         android:text="סט"
         android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/ex_history_recycler_set"
-        app:layout_constraintStart_toStartOf="@+id/ex_history_recycler_set"
-        app:layout_constraintTop_toTopOf="@+id/ex_history_recycler_set" />
+        app:layout_constraintEnd_toEndOf="@+id/number_of_product_recycler_recipe"
+        app:layout_constraintStart_toStartOf="@+id/number_of_product_recycler_recipe"
+        app:layout_constraintTop_toTopOf="@+id/number_of_product_recycler_recipe" />
 
     <TextView
         android:id="@+id/textView4"

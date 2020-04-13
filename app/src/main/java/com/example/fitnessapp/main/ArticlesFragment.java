@@ -63,7 +63,7 @@ public class ArticlesFragment extends Fragment {
         viewPager = v.findViewById(R.id.viewPager);
         tabLayout = v.findViewById(R.id.layoutTab);
 
-        recipesFragmentTab = new RecipesFragmentTab(recipes);
+        recipesFragmentTab = new RecipesFragmentTab(recipes, user);
         articalsFragmentTab = new ArticalsFragmentTab();
 
         tabLayout.setupWithViewPager(viewPager);

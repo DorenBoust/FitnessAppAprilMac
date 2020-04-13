@@ -11,13 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:background="@color/waite"
+        android:background="@color/lightGreen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <TextView
@@ -32,43 +30,12 @@
         app:layout_constraintStart_toStartOf="@+id/guideline44"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="סט"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/number_of_product_recycler_recipe"
-        app:layout_constraintStart_toStartOf="@+id/number_of_product_recycler_recipe"
-        app:layout_constraintTop_toTopOf="@+id/number_of_product_recycler_recipe" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="חזרות"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline43"
-        app:layout_constraintStart_toStartOf="@+id/guideline43"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text='משקל (ק"ג) '
-        android:textSize="10sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline42"
-        app:layout_constraintStart_toStartOf="@+id/guideline42"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline42"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
+        app:layout_constraintGuide_percent="0.15" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline43"
@@ -82,28 +49,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.84" />
 
     <TextView
-        android:id="@+id/ex_history_recycler_repit"
+        android:id="@+id/qty_recycler_recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/open_sans_hebrew_regular"
-        android:text="5"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
+        android:text="500"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline42"
+        app:layout_constraintStart_toStartOf="@+id/guideline42"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/ex_history_recycler_kg"
+        android:id="@+id/unit_recycler_reice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
         android:fontFamily="@font/open_sans_hebrew_regular"
-        android:text="5"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView5"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
+        android:text="גרם"
+        app:layout_constraintEnd_toEndOf="@+id/qty_recycler_recipe"
+        app:layout_constraintStart_toStartOf="@+id/qty_recycler_recipe"
+        app:layout_constraintTop_toTopOf="@+id/qty_recycler_recipe" />
+
+    <TextView
+        android:id="@+id/product_name_recipe_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/open_sans_hebrew_regular"
+        android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline43"
+        app:layout_constraintStart_toStartOf="@+id/guideline43"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

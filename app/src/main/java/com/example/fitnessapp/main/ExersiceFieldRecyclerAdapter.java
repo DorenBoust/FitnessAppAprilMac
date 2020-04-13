@@ -55,10 +55,10 @@ public class ExersiceFieldRecyclerAdapter extends RecyclerView.Adapter<ExersiceF
         public FieldHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvSets = itemView.findViewById(R.id.ex_history_recycler_set);
+            tvSets = itemView.findViewById(R.id.number_of_product_recycler_recipe);
             etRepit = itemView.findViewById(R.id.ex_activity_recycler_repit);
             etKG = itemView.findViewById(R.id.ex_activity_recycler_kg);
-            line = itemView.findViewById(R.id.ex_activity_recycler_line);
+            line = itemView.findViewById(R.id.recipe_product_activity_recycler_line);
         }
     }
 

@@ -70,10 +70,10 @@ public class ExsercieHistoryRecyclerAdapter extends RecyclerView.Adapter<Exserci
 
         public HistoryFieldHolder(@NonNull View itemView) {
             super(itemView);
-            set = itemView.findViewById(R.id.ex_history_recycler_set);
+            set = itemView.findViewById(R.id.number_of_product_recycler_recipe);
             repit = itemView.findViewById(R.id.ex_history_recycler_repit);
             kg = itemView.findViewById(R.id.ex_history_recycler_kg);
-            line = itemView.findViewById(R.id.ex_activity_recycler_line);
+            line = itemView.findViewById(R.id.recipe_product_activity_recycler_line);
 
         }
 

@@ -19,8 +19,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.fitnessapp.R;
+import com.example.fitnessapp.keys.KeysIntents;
 import com.example.fitnessapp.keys.KeysSharedPrefercence;
+import com.example.fitnessapp.user.ProductDataBase;
+import com.example.fitnessapp.user.User;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,16 +33,19 @@ import com.google.gson.Gson;
 public class RecipesFragmentTab extends Fragment implements RecipeRecyclerAdapter.OnRecipeListener {
 
     private TextView titleName;
+    private User user;
     private Recipes recipesList;
     private Recipes refrashRecipes;
     private SwipeRefreshLayout swipeRefreshLayout;
     private MutableLiveData<Recipes> mutableLiveData = new MutableLiveData<>();
+    private Gson gson = new Gson();
 
 
 
-    public RecipesFragmentTab(Recipes recipes) {
+    public RecipesFragmentTab(Recipes recipes, User user) {
         // Required empty public constructor
         this.recipesList = recipes;
+        this.user = user;
     }
 
 
@@ -47,7 +55,6 @@ public class RecipesFragmentTab extends Fragment implements RecipeRecyclerAdapte
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(KeysSharedPrefercence.REFRESH_RESIPE, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPreferences.edit();
-        Gson gson = new Gson();
         String recipe = gson.toJson(refrashRecipes);
         edit.putString(KeysSharedPrefercence.PUT_REFRESH_RESIPE, recipe);
         edit.apply();
@@ -95,8 +102,6 @@ public class RecipesFragmentTab extends Fragment implements RecipeRecyclerAdapte
             @Override
             public void onRefresh() {
 
-                System.out.println("REFRASH");
-
                 recyclerView.setVisibility(View.INVISIBLE);
 
                 new AsyncArticalsJSON(mutableLiveData).execute();
@@ -135,8 +140,16 @@ public class RecipesFragmentTab extends Fragment implements RecipeRecyclerAdapte
     @Override
     public void OnRecipeClick(int position) {
 
-        recipesList.getRecipes().get(position);
+        System.out.println("On Click Have ProductBase? " + user.getProductDataBase());
+
+        Recpie recpie = recipesList.getRecipes().get(position);
         Intent intent = new Intent(getActivity(), RecipeActivity.class);
+        String jsonRecipe = gson.toJson(recpie);
+        String jsonDataBase = gson.toJson(user.getProductDataBase());
+        intent.putExtra(KeysIntents.SEND_RECIPE, jsonRecipe);
+        intent.putExtra(KeysIntents.SEND_PRODUCT_DATABASE, jsonDataBase);
+
+
         startActivity(intent);
 
     }

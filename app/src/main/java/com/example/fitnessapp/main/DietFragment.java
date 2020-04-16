@@ -128,9 +128,9 @@ public class DietFragment extends Fragment implements DietRecyclerAdapter.OnMeal
                 int x = 0;
                 List<Meal> meals = user.getDiet().getMeals();
                 System.out.println("meals.size " + meals.size());
-                for (int i = 0; i < meals.size() - 1; i++) {
+                //TODO: Crash if the meal box not show right in the UI // like at the field exsercie history.
+                for (int i = 0; i < 0; i++) { // need to change 0 to (meals.size() - 1), put 0 just for not to be crash
 
-                    //TODO: Crash if the meal box not show right in the UI // like at the field exsercie history
                     View itemView = recyclerView.getChildAt(i);
                     ImageView productImage = itemView.findViewById(R.id.iv_image_product);
                     List<ChangeProductImageDietFragment> changeProductImageDietFragmentList = new ArrayList<>();

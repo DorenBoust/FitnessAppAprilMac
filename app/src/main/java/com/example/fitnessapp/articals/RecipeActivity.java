@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.keys.KeysIntents;
@@ -34,6 +35,9 @@ public class RecipeActivity extends AppCompatActivity {
     private Map<String, ProductDataBase> productDataBase;
     private Gson gson = new Gson();
 
+    //pallte
+    private TextView recipeTitle;
+
 
 
 
@@ -42,11 +46,15 @@ public class RecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
+        recipeTitle = findViewById(R.id.title_recipe_activity_tv);
+
 
         Intent intent = getIntent();
         String stringExtraRecipe = intent.getStringExtra(KeysIntents.SEND_RECIPE);
         String stringExtraProductDataBase = intent.getStringExtra(KeysIntents.SEND_PRODUCT_DATABASE);
         recpie = gson.fromJson(stringExtraRecipe, Recpie.class);
+
+        recipeTitle.setText(recpie.getName());
 
         productDataBase = gson.fromJson(stringExtraProductDataBase, new TypeToken<HashMap<String, ProductDataBase>>() {}.getType());
 
@@ -61,7 +69,7 @@ public class RecipeActivity extends AppCompatActivity {
         recipeTabLayout = findViewById(R.id.tabLayout_recipe_activity);
 
         productTabOnRecipeActivityFragment = new ProductTabOnRecipeActivityFragment(recpie, productDataBase);
-        stepsTabOnRecipeActivityFragment = new StepsTabOnRecipeActivityFragment();
+        stepsTabOnRecipeActivityFragment = new StepsTabOnRecipeActivityFragment(recpie);
 
         recipeTabLayout.setupWithViewPager(viewPager);
 

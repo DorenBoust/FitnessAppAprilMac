@@ -19,39 +19,43 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-    <TextView
-        android:id="@+id/qty_recycler_recipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/open_sans_hebrew_regular"
-        android:text="500"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/recipe_product_activity_recycler_line"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/unit_recycler_reice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:fontFamily="@font/open_sans_hebrew_regular"
-        android:text="גרם"
-        app:layout_constraintEnd_toEndOf="@+id/qty_recycler_recipe"
-        app:layout_constraintStart_toStartOf="@+id/qty_recycler_recipe"
-        app:layout_constraintTop_toTopOf="@+id/qty_recycler_recipe" />
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/recipe_product_activity_recycler_line"
+        app:layout_constraintStart_toStartOf="@+id/guideline63"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/green" />
 
     <TextView
         android:id="@+id/step_number_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/open_sans_hebrew_regular"
-        android:text="TextView"
+        android:fontFamily="@font/open_sans_hebrew_bold"
+        android:text="1"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/recipe_product_activity_recycler_line"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline63"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.74" />
+
+    <TextView
+        android:id="@+id/step_process_tv_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans_hebrew_regular"
+        android:text="להקציף את"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

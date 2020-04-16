@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fitnessapp.R;
 import com.example.fitnessapp.user.ProductDataBase;
-import com.example.fitnessapp.user.User;
 
-import java.util.Dictionary;
 import java.util.Map;
 
 public class ProductTabRecyclerAdapter extends RecyclerView.Adapter<ProductTabRecyclerAdapter.ProductHolder> {
@@ -43,7 +41,6 @@ public class ProductTabRecyclerAdapter extends RecyclerView.Adapter<ProductTabRe
 
         RecpieProduct recpieProduct = recpie.getProduct().get(position);
 
-        holder.productNumber.setText(String.valueOf(position + 1));
         holder.productName.setText(productDataBase.get(split[4]).getProductNameHEB());
         holder.qty.setText(recpieProduct.getQty());
         holder.unit.setText(recpieProduct.getUnit());
@@ -57,7 +54,6 @@ public class ProductTabRecyclerAdapter extends RecyclerView.Adapter<ProductTabRe
 
     public class ProductHolder extends RecyclerView.ViewHolder {
 
-        private TextView productNumber;
         private TextView productName;
         private TextView qty;
         private TextView unit;
@@ -65,8 +61,7 @@ public class ProductTabRecyclerAdapter extends RecyclerView.Adapter<ProductTabRe
         public ProductHolder(@NonNull View itemView) {
             super(itemView);
 
-            productNumber = itemView.findViewById(R.id.number_of_product_recycler_recipe);
-            productName = itemView.findViewById(R.id.product_name_recipe_recycler);
+            productName = itemView.findViewById(R.id.step_number_tv);
             qty = itemView.findViewById(R.id.qty_recycler_recipe);
             unit = itemView.findViewById(R.id.unit_recycler_reice);
 

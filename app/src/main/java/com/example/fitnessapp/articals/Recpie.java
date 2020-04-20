@@ -1,5 +1,7 @@
 package com.example.fitnessapp.articals;
 
+import com.example.fitnessapp.models.CustomMethods;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +71,7 @@ public class Recpie implements Serializable {
     }
 
     public String getMainImage() {
-        return mainImage;
+        return CustomMethods.httpsTohttp(mainImage);
     }
 
     public void setMainImage(String mainImage) {

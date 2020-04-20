@@ -59,6 +59,7 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
 
             String urlTraining = "http://appfitness.boust.me/wp-json/acf/v3/trainers?appConnection=" + strings[0];
             String json = urlToString(urlTraining);
+            System.out.println("urlTraining" + json);
 
             JSONArray rootJSONArray = new JSONArray(json);
             JSONObject rootJSONObject = rootJSONArray.getJSONObject(0);
@@ -98,10 +99,11 @@ public class AsyncJSON extends AsyncTask<String, Integer, User>{
 
                     String exNameJson = ex.getString("exName");
                     String[] exSplit = exNameJson.split("/");
-                    String exJSON = "https://appfitness.boust.me/wp-json/acf/v3/exercises?name=" + exSplit[exSplit.length-1];
+                    String exJSON = "http://appfitness.boust.me/wp-json/acf/v3/exercises?name=" + exSplit[exSplit.length-1];
+
 
                     String jsonEx = urlToString(exJSON);
-                    System.out.println(jsonEx);
+                    System.out.println("jsonEx " + jsonEx);
 
                     JSONArray rootJSONArrayEx = new JSONArray(jsonEx);
                     JSONObject rootJSONObjectEx = rootJSONArrayEx.getJSONObject(0);

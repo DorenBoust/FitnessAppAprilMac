@@ -1,5 +1,7 @@
 package com.example.fitnessapp.user;
 
+import com.example.fitnessapp.models.CustomMethods;
+
 import java.io.Serializable;
 
 public class ProductDataBase implements Serializable {
@@ -48,7 +50,7 @@ public class ProductDataBase implements Serializable {
         this.productNameEN = productNameEN;
     }
     public String getProductImage() {
-        return productImage;
+        return CustomMethods.httpsTohttp(productImage);
     }
     public void setProductImage(String productImage) {
         this.productImage = productImage;

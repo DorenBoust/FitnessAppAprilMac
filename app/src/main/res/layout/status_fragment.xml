@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_hebrew_bold"
             android:text="עליה במסת שריר"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -287,15 +288,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.16" />
+        app:layout_constraintGuide_percent="0.13" />
 
     <Button
         android:id="@+id/btn_calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="שריין ביומן"
-        app:layout_constraintBottom_toBottomOf="@+id/textView12"
-        app:layout_constraintTop_toTopOf="@+id/textView12"
-        tools:layout_editor_absoluteX="47dp" />
+        android:textColor="@color/mainGreen"
+        android:fontFamily="@font/open_sans_hebrew_regular"
+        android:background="@drawable/btn_login_custom_design"
+        app:layout_constraintEnd_toStartOf="@+id/guideline17"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/next_metting_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

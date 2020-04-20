@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fitnessapp.R;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -41,7 +42,12 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeRecyclerAd
 
         Recpie recpie = recpies.getRecipes().get(position);
 
+        System.out.println("recpie.getMainImage() " + recpie.getMainImage());
+
+
         Picasso.get().load(recpie.getMainImage()).into(holder.recipeImage);
+
+
         holder.recipeTitle.setText(recpie.getName());
         holder.recipeTime.setText(recpie.getEstTime());
         holder.recipeLevel.setText(recpie.getLevel());

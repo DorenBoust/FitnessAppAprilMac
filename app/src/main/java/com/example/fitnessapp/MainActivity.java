@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
         userJsonLiveData.observe(this, new Observer<User>() {
            @Override
+
            public void onChanged(User user) {
 
                userObject = user;

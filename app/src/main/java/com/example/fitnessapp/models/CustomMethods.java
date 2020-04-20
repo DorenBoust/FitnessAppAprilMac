@@ -181,6 +181,13 @@ public class CustomMethods {
 
     }
 
+    //for some resone picasso not loading image from fitness web **that https**, this metud convert to http.
+    public static String httpsTohttp(String url){
+        String[] splitHTTPS = url.split("//");
+        String http = "http://" + splitHTTPS[1];
+        return http;
+    }
+
 
 
 }

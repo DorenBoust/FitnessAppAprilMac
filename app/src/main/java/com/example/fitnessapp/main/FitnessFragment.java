@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -228,12 +229,16 @@ public class FitnessFragment extends Fragment {
             @Override
             public void onChanged(List<ExerciseFullHistory> exerciseFullHistories) {
 
-                ListExHistory listExHistory = new ListExHistory(exerciseFullHistories);
-                Intent fitnessHistoryIntent = new Intent(getContext(),FitnessHistoryMainActivity.class);
-                Gson gson = new Gson();
-                String listExHistoryJson = gson.toJson(listExHistory);
-                fitnessHistoryIntent.putExtra(KeysIntents.SEND_HISTORY_EXERCISE, listExHistoryJson);
-                startActivity(fitnessHistoryIntent);
+                if (exerciseFullHistories != null) {
+                    ListExHistory listExHistory = new ListExHistory(exerciseFullHistories);
+                    Intent fitnessHistoryIntent = new Intent(getContext(), FitnessHistoryMainActivity.class);
+                    Gson gson = new Gson();
+                    String listExHistoryJson = gson.toJson(listExHistory);
+                    fitnessHistoryIntent.putExtra(KeysIntents.SEND_HISTORY_EXERCISE, listExHistoryJson);
+                    startActivity(fitnessHistoryIntent);
+                } else {
+                    Toast.makeText(getContext(), "לא נמצאה היסטוריה לתרגילים", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -439,92 +444,81 @@ public class FitnessFragment extends Fragment {
         fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
                 List<String> allExNames = (List<String>) task.getResult().get(KeysFirebaseStore.NAMES_OF_ALL_EXNAMES_THE_USER_DONE);
-                System.out.println("allExNames size " + allExNames.size());
-                List<ExerciseFullHistory> exerciseFullHistoryList = new ArrayList<>();
+                if (allExNames != null) {
+                    System.out.println("allExNames size " + allExNames.size());
+                    List<ExerciseFullHistory> exerciseFullHistoryList = new ArrayList<>();
 
-                for (String exName : allExNames) {
-                    fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid()).collection(exName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            System.out.println("Connect to History Firebase");
-                            List<ExerciseHistory> listExerciseHistory = new ArrayList<>();
+                    for (String exName : allExNames) {
+                        fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid()).collection(exName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                System.out.println("Connect to History Firebase");
+                                List<ExerciseHistory> listExerciseHistory = new ArrayList<>();
 
-                            System.out.println("task.getResult().size() - " + task.getResult().size());
+                                System.out.println("task.getResult().size() - " + task.getResult().size());
 
-                            for (int i = 0; i < task.getResult().size(); i++) {
-                                Map<String, Object> data = task.getResult().getDocuments().get(i).getData();
-                                System.out.println("Data ----- " + data);
+                                for (int i = 0; i < task.getResult().size(); i++) {
+                                    Map<String, Object> data = task.getResult().getDocuments().get(i).getData();
+                                    System.out.println("Data ----- " + data);
 
-                                System.out.println("Name Class ------ " + data.getClass().getSimpleName());
+                                    System.out.println("Name Class ------ " + data.getClass().getSimpleName());
 
-                                Object exerciseHistories = data.get("exerciseHistories");
-                                System.out.println("OBJECT --------- " + exerciseHistories);
+                                    Object exerciseHistories = data.get("exerciseHistories");
+                                    System.out.println("OBJECT --------- " + exerciseHistories);
 
-                                Gson gson = new Gson();
-                                String row = gson.toJson(exerciseHistories);
+                                    Gson gson = new Gson();
+                                    String row = gson.toJson(exerciseHistories);
 
-                                System.out.println("JSON NEWWWWWWW ----- " + row);
+                                    System.out.println("JSON NEWWWWWWW ----- " + row);
 
-                                try {
-                                    JSONArray jsonArray = new JSONArray(row);
-                                    for (int j = 0; j < jsonArray.length(); j++) {
-                                        JSONObject jsonObject = (JSONObject) jsonArray.get(j);
-                                        String jsonDate = (String) jsonObject.get("date");
+                                    try {
+                                        JSONArray jsonArray = new JSONArray(row);
+                                        for (int j = 0; j < jsonArray.length(); j++) {
+                                            JSONObject jsonObject = (JSONObject) jsonArray.get(j);
+                                            String jsonDate = (String) jsonObject.get("date");
 
-                                        System.out.println(jsonDate);
+                                            System.out.println(jsonDate);
 
-                                        JSONArray jsonExList = (JSONArray) jsonObject.get("exList");
+                                            JSONArray jsonExList = (JSONArray) jsonObject.get("exList");
 
-                                        List<ExersixeOneRawHistory> listExersixeOneRawHistory = new ArrayList<>();
+                                            List<ExersixeOneRawHistory> listExersixeOneRawHistory = new ArrayList<>();
 
-                                        for (int k = 0; k < jsonExList.length(); k++) {
-                                            JSONObject jsonObject1 = (JSONObject) jsonExList.get(k);
+                                            for (int k = 0; k < jsonExList.length(); k++) {
+                                                JSONObject jsonObject1 = (JSONObject) jsonExList.get(k);
 
-                                            Integer jsonSet = (Integer) jsonObject1.get("set");
+                                                Integer jsonSet = (Integer) jsonObject1.get("set");
 
-                                            Double jsonKG = (Double) jsonObject1.get("kg");
+                                                Double jsonKG = (Double) jsonObject1.get("kg");
 
-                                            Integer jsonRepit = (Integer) jsonObject1.get("repit");
+                                                Integer jsonRepit = (Integer) jsonObject1.get("repit");
 
 
-                                            ExersixeOneRawHistory exersixeOneRawHistoryJSON = new ExersixeOneRawHistory(jsonSet, jsonRepit, jsonKG);
-                                            listExersixeOneRawHistory.add(exersixeOneRawHistoryJSON);
+                                                ExersixeOneRawHistory exersixeOneRawHistoryJSON = new ExersixeOneRawHistory(jsonSet, jsonRepit, jsonKG);
+                                                listExersixeOneRawHistory.add(exersixeOneRawHistoryJSON);
+                                            }
+
+                                            ExerciseHistory exerciseHistoryJSON = new ExerciseHistory(jsonDate, listExersixeOneRawHistory);
+                                            listExerciseHistory.add(exerciseHistoryJSON);
+
+                                            exerciseFullHistoryList.add(new ExerciseFullHistory(exName, listExerciseHistory.get(listExerciseHistory.size() - 1).getDate(), listExerciseHistory));
+
+
                                         }
-
-                                        ExerciseHistory exerciseHistoryJSON = new ExerciseHistory(jsonDate, listExersixeOneRawHistory);
-                                        listExerciseHistory.add(exerciseHistoryJSON);
-
-                                        exerciseFullHistoryList.add(new ExerciseFullHistory(exName,listExerciseHistory.get(listExerciseHistory.size()-1).getDate() ,listExerciseHistory));
-
-
-
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+
                                 }
 
+                                mutableLiveDataExersiceHistory.setValue(exerciseFullHistoryList);
+
                             }
-
-                            System.out.println("exerciseHistoryList @@@" + listExerciseHistory);
-
-
-                            mutableLiveDataExersiceHistory.setValue(exerciseFullHistoryList);
-
-//                            if (exerciseFullHistoryList != null){
-//
-//                                Intent fitnessHistoryIntent = new Intent(getContext(),FitnessHistoryMainActivity.class);
-//                                startActivity(fitnessHistoryIntent);
-//                                return;
-//
-//                            } else {
-//                                Toast.makeText(getContext(), "עוד לא יצרת היסטוריה לאף תרגיל", Toast.LENGTH_SHORT).show();
-//                            }
-
-                            System.out.println("ExerciseFullHistory - - - - " + exerciseFullHistoryList);
-
-                        }
-                    });
+                        });
+                    }
+                } else {
+                    mutableLiveDataExersiceHistory.setValue(null);
                 }
             }
         });

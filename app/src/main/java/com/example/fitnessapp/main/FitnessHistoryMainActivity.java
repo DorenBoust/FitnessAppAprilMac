@@ -1,6 +1,7 @@
 package com.example.fitnessapp.main;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.ramotion.foldingcell.FoldingCell;
 public class FitnessHistoryMainActivity extends AppCompatActivity {
 
     private ListExHistory listOFExerciseFullHistory;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +25,11 @@ public class FitnessHistoryMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fitness_history_main);
 
         Intent intent = getIntent();
-
         Gson gson = new Gson();
-
         String stringExtra = intent.getStringExtra(KeysIntents.SEND_HISTORY_EXERCISE);
         listOFExerciseFullHistory = gson.fromJson(stringExtra, ListExHistory.class);
 
-        System.out.println("ON ACTIVITY EX HISTORY " + listOFExerciseFullHistory);
+        recyclerView = findViewById(R.id.recyclerview_fitness_history);
 
 
     }

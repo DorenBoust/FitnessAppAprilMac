@@ -12,5 +12,7 @@ public class KeysIntents {
 
     public final static String SEND_RECIPE = "send recipe";
 
+    public final static String SEND_HISTORY_EXERCISE = "send history Exercise";
+
 
 }

@@ -2,6 +2,7 @@ package com.example.fitnessapp.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -35,9 +36,11 @@ import com.example.fitnessapp.models.CustomMethods;
 import com.example.fitnessapp.user.Exercise;
 import com.example.fitnessapp.user.ExerciseHistory;
 import com.example.fitnessapp.user.ExersixeOneRawHistory;
+import com.example.fitnessapp.user.NameOfAllExercieOnHistory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
@@ -57,6 +60,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 
 import static com.example.fitnessapp.models.AppNotification.CHANNEL_1_ID;
@@ -285,6 +289,10 @@ public class ExersiceActivity extends AppCompatActivity {
                 System.out.println(exerciseHistory);
                 Task<Void> saveOnDB = fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid())
                         .collection(tvExName.getText().toString()).document(currentDate).set(exerciseHistoryToFIreBase);
+
+
+                //to make activity historyof all the exercise that user done this func save as firebase field list of all the exNames
+                fireBaseHistoryExNames(tvExName.getText().toString());
 
 
 
@@ -815,6 +823,43 @@ public class ExersiceActivity extends AppCompatActivity {
         editor.putInt(KeysSharedPrefercence.CORRECT_EXERCISE, finishWorkout);
 
         editor.apply();
+
+    }
+
+    private void fireBaseHistoryExNames(String exName){
+
+        fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                List<String> allExNames = (List<String>) task.getResult().get(KeysFirebaseStore.NAMES_OF_ALL_EXNAMES_THE_USER_DONE);
+
+
+                if(task.getResult().get(KeysFirebaseStore.NAMES_OF_ALL_EXNAMES_THE_USER_DONE) != null){
+
+                    Set<String> setAllExName = new ArraySet<>();
+
+                    for (String exName : allExNames) {
+                        setAllExName.add(exName);
+                    }
+                    setAllExName.add(exName);
+
+                    List<String> newAllExName = new ArrayList<>();
+                    newAllExName.addAll(setAllExName);
+
+                    NameOfAllExercieOnHistory nameOfAllExercieOnHistory = new NameOfAllExercieOnHistory(newAllExName);
+                    fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid()).set(nameOfAllExercieOnHistory);
+
+                }else {
+                    List<String> exNames = new ArrayList<>();
+                    exNames.add(exName);
+                    NameOfAllExercieOnHistory nameOfAllExercieOnHistory = new NameOfAllExercieOnHistory(exNames);
+                    fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid()).set(nameOfAllExercieOnHistory);
+
+                }
+            }
+        });
+
 
     }
 

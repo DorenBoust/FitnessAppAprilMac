@@ -1,5 +1,7 @@
 package com.example.fitnessapp.user;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +10,7 @@ public class ExerciseHistory {
     private List<ExersixeOneRawHistory> exList;
 
     public ExerciseHistory(String date, List<ExersixeOneRawHistory> exList) {
+
         this.date = date;
         this.exList = exList;
     }
@@ -35,4 +38,7 @@ public class ExerciseHistory {
                 ", exList=" + exList +
                 '}';
     }
+
+
 }
+

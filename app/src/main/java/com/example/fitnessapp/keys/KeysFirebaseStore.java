@@ -10,4 +10,8 @@ public class KeysFirebaseStore {
     public final static String COLLECTION_EXERCISE_HISTORY = "exercise collection";
     public final static String EXERCISE_HISTORY_DATA = "data exercise collection";
 
+    public final static String NAMES_OF_ALL_EXNAMES_THE_USER_DONE = "allExNames";
+
+
+
 }

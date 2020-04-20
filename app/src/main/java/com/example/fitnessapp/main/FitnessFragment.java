@@ -1,6 +1,8 @@
 package com.example.fitnessapp.main;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -30,20 +32,37 @@ import android.widget.ViewSwitcher;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.fitnessapp.R;
+import com.example.fitnessapp.keys.KeysFirebaseStore;
 import com.example.fitnessapp.keys.KeysIntents;
 import com.example.fitnessapp.keys.KeysSharedPrefercence;
 import com.example.fitnessapp.keys.KeysBundle;
 import com.example.fitnessapp.models.CustomMethods;
 import com.example.fitnessapp.user.Day;
 import com.example.fitnessapp.user.Exercise;
+import com.example.fitnessapp.user.ExerciseFullHistory;
+import com.example.fitnessapp.user.ExerciseHistory;
+import com.example.fitnessapp.user.ExersixeOneRawHistory;
+import com.example.fitnessapp.user.ListExHistory;
 import com.example.fitnessapp.user.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class FitnessFragment extends Fragment {
 
@@ -75,6 +94,13 @@ public class FitnessFragment extends Fragment {
 
     //resume Exercise
     private SeekBar exersiceProgressBar;
+
+    //history
+    private ImageView fitnessHistory;
+    private FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+    private MutableLiveData<List<ExerciseFullHistory>> mutableLiveDataExersiceHistory = new MutableLiveData<>();
+
 
 
 
@@ -108,6 +134,11 @@ public class FitnessFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fitness_fragment, container, false);
+
+        fitnessHistory = v.findViewById(R.id.fitness_history_imageview);
+
+        List<Exercise> exercises = (List<Exercise>) getArguments().getSerializable(KeysIntents.EX_LIST);
+        System.out.println("exercises on fitness fragment - " + exercises);
 
         tvMainDayName = v.findViewById(R.id.tv_fitness_main_ex_day_name);
         tvMainNumberOfEx = v.findViewById(R.id.tv_fitness_main_ex_day_inner_exNumber);
@@ -183,6 +214,28 @@ public class FitnessFragment extends Fragment {
             intent.putExtra(KeysIntents.EX_LIST, (Serializable) exercisesData);
             intent.putExtra(KeysIntents.DAY_NAME, sendDayName);
             startActivity(intent);
+        });
+
+        //fitness history
+        fitnessHistory.setOnClickListener(btn->{
+
+            getFitnessHistory();
+
+
+        });
+
+        mutableLiveDataExersiceHistory.observe(getActivity(), new Observer<List<ExerciseFullHistory>>() {
+            @Override
+            public void onChanged(List<ExerciseFullHistory> exerciseFullHistories) {
+
+                ListExHistory listExHistory = new ListExHistory(exerciseFullHistories);
+                Intent fitnessHistoryIntent = new Intent(getContext(),FitnessHistoryMainActivity.class);
+                Gson gson = new Gson();
+                String listExHistoryJson = gson.toJson(listExHistory);
+                fitnessHistoryIntent.putExtra(KeysIntents.SEND_HISTORY_EXERCISE, listExHistoryJson);
+                startActivity(fitnessHistoryIntent);
+
+            }
         });
 
         return v;
@@ -378,6 +431,103 @@ public class FitnessFragment extends Fragment {
         editor.putInt(KeysSharedPrefercence.CORRECT_EXERCISE, 0);
 
         editor.apply();
+
+    }
+
+    private void getFitnessHistory(){
+
+        fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                List<String> allExNames = (List<String>) task.getResult().get(KeysFirebaseStore.NAMES_OF_ALL_EXNAMES_THE_USER_DONE);
+                System.out.println("allExNames size " + allExNames.size());
+                List<ExerciseFullHistory> exerciseFullHistoryList = new ArrayList<>();
+
+                for (String exName : allExNames) {
+                    fStore.collection(KeysFirebaseStore.EXERCISE_HISTORY_DATA).document(fAuth.getUid()).collection(exName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            System.out.println("Connect to History Firebase");
+                            List<ExerciseHistory> listExerciseHistory = new ArrayList<>();
+
+                            System.out.println("task.getResult().size() - " + task.getResult().size());
+
+                            for (int i = 0; i < task.getResult().size(); i++) {
+                                Map<String, Object> data = task.getResult().getDocuments().get(i).getData();
+                                System.out.println("Data ----- " + data);
+
+                                System.out.println("Name Class ------ " + data.getClass().getSimpleName());
+
+                                Object exerciseHistories = data.get("exerciseHistories");
+                                System.out.println("OBJECT --------- " + exerciseHistories);
+
+                                Gson gson = new Gson();
+                                String row = gson.toJson(exerciseHistories);
+
+                                System.out.println("JSON NEWWWWWWW ----- " + row);
+
+                                try {
+                                    JSONArray jsonArray = new JSONArray(row);
+                                    for (int j = 0; j < jsonArray.length(); j++) {
+                                        JSONObject jsonObject = (JSONObject) jsonArray.get(j);
+                                        String jsonDate = (String) jsonObject.get("date");
+
+                                        System.out.println(jsonDate);
+
+                                        JSONArray jsonExList = (JSONArray) jsonObject.get("exList");
+
+                                        List<ExersixeOneRawHistory> listExersixeOneRawHistory = new ArrayList<>();
+
+                                        for (int k = 0; k < jsonExList.length(); k++) {
+                                            JSONObject jsonObject1 = (JSONObject) jsonExList.get(k);
+
+                                            Integer jsonSet = (Integer) jsonObject1.get("set");
+
+                                            Double jsonKG = (Double) jsonObject1.get("kg");
+
+                                            Integer jsonRepit = (Integer) jsonObject1.get("repit");
+
+
+                                            ExersixeOneRawHistory exersixeOneRawHistoryJSON = new ExersixeOneRawHistory(jsonSet, jsonRepit, jsonKG);
+                                            listExersixeOneRawHistory.add(exersixeOneRawHistoryJSON);
+                                        }
+
+                                        ExerciseHistory exerciseHistoryJSON = new ExerciseHistory(jsonDate, listExersixeOneRawHistory);
+                                        listExerciseHistory.add(exerciseHistoryJSON);
+
+                                        exerciseFullHistoryList.add(new ExerciseFullHistory(exName,listExerciseHistory.get(listExerciseHistory.size()-1).getDate() ,listExerciseHistory));
+
+
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+                            System.out.println("exerciseHistoryList @@@" + listExerciseHistory);
+
+
+                            mutableLiveDataExersiceHistory.setValue(exerciseFullHistoryList);
+
+//                            if (exerciseFullHistoryList != null){
+//
+//                                Intent fitnessHistoryIntent = new Intent(getContext(),FitnessHistoryMainActivity.class);
+//                                startActivity(fitnessHistoryIntent);
+//                                return;
+//
+//                            } else {
+//                                Toast.makeText(getContext(), "עוד לא יצרת היסטוריה לאף תרגיל", Toast.LENGTH_SHORT).show();
+//                            }
+
+                            System.out.println("ExerciseFullHistory - - - - " + exerciseFullHistoryList);
+
+                        }
+                    });
+                }
+            }
+        });
 
     }
 

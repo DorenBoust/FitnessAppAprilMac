@@ -300,4 +300,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fitness_main_ex_layout_dayOff" />
 
+    <ImageView
+        android:id="@+id/fitness_history_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_recent_history"
+        app:layout_constraintEnd_toStartOf="@+id/guideline18"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fitness_main_ex_layout_dayOff" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

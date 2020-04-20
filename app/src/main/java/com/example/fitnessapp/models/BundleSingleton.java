@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import com.example.fitnessapp.articals.Recipes;
 import com.example.fitnessapp.articals.Recpie;
 import com.example.fitnessapp.keys.KeysBundle;
+import com.example.fitnessapp.user.Exercise;
 import com.example.fitnessapp.user.Meal;
 import com.example.fitnessapp.user.User;
 
@@ -30,5 +31,6 @@ public class BundleSingleton {
         bundle.putSerializable(KeysBundle.RECIPE_TO_FRAGMENT, recpies);
 
     }
+
 
 }

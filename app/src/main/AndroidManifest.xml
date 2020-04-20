@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".articals.RecipeActivity"></activity>
+        <activity android:name=".main.FitnessHistoryMainActivity" android:launchMode='singleTask'></activity>
+        <activity android:name=".articals.RecipeActivity" />
         <activity android:name=".main.DietActivity" />
         <activity android:name=".main.ExersiceActivity" />
         <activity android:name=".MainActivity" />
